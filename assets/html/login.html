@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../../assets/css/loginStyle.css">
+    <link rel="stylesheet" href="../../assets/libraries/jquery-ui/jquery-ui.min.css">
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm" action="../../pages/login.php" method="post">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required><br>
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required><br>
+
+            <button type="submit" id="loginBtn">Login</button>
+            <div id="loadingSpinner" style="display: none;"></div>
+        </form>
+    </div>
+
+    <script src="../../assets/libraries/jquery/jquery.min.js"></script>
+    <script src="../../assets/libraries/jquery-ui/jquery-ui.min.js"></script>
+    <script src="../../assets/js/loginScript.js"></script>
+</body>
+</html>
+
