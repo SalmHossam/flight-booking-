@@ -1,3 +1,15 @@
+<!-- home.php -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Home</title>
+    <link rel="stylesheet" href="../../assets/css/company.css">
+</head>
+<body>
+
 <?php
 
 if (session_status() === PHP_SESSION_NONE) {
@@ -15,67 +27,44 @@ $companyRepo = new CompanyRepo();
 $flightRepo = new FlightRepo();
 
 //session_start();
-$companyId = $_SESSION['user_id'];
+$companyId = htmlspecialchars($_SESSION['user_id']); // Escape session user ID
 
 // Get company profile
 $company = $companyRepo->getCompanyProfile($companyId);
 
+// Output company information (Logo, name, etc.)
+echo '<div>';
+echo '<img src="' . htmlspecialchars($company->getLogoImg()) . '" alt="Company Logo">'; // Escape logo image
+echo '<h1>' . htmlspecialchars($company->getName()) . '</h1>'; // Escape company name
+echo '<p>' . htmlspecialchars($company->getBio()) . '</p>'; // Escape company bio
+// Add more company information as needed
+echo '</div>';
+
 // List of Flights
 $flights = $flightRepo->getAllFlightsByCompanyId($companyId);
     
+echo '<table>';
+echo '<thead>';
+echo '<tr><th>ID</th><th>Name</th><th>Itinerary</th><th>Actions</th></tr>';
+echo '</thead>';
+echo '<tbody>';
+foreach ($flights as $flight) {
+    echo '<tr>';
+    echo '<td>' . htmlspecialchars($flight->getId()) . '</td>'; // Escape flight ID
+    echo '<td>' . htmlspecialchars($flight->getName()) . '</td>'; // Escape flight name
+    echo '<td>' . htmlspecialchars($flight->getItinerary()) . '</td>'; // Escape itinerary
+    echo '<td><a href="flight_details.php?id=' . htmlspecialchars($flight->getId()) . '">View Details</a></td>'; // Escape flight ID in URL
+    echo '</tr>';
+}
+echo '</tbody>';
+echo '</table>';
+
+// Profile and Messages links
+echo '<div>';
+echo '<a href="profile.php">Profile</a>';
+echo '<a href="add_flight.php">Add Flight</a>';
+echo '</div>';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company Home</title>
-    <link rel="stylesheet" href="../../assets/css/cHomeStyle.css">
-    <link rel="stylesheet" href="../../assets/libraries/jquery-ui/jquery-ui.min.css">
-</head>
-<body>
-
-<div class="company-container">
-
-    <?php
-    // Output company information (Logo, name, etc.)
-    echo '<div class="company-info">';
-    echo '<img src="' . $company->getLogoImg() . '" alt="Company Logo" class="company-logo">';
-    echo '<h1>' . $company->getName() . '</h1>';
-    echo '<p>' . $company->getBio() . '</p>';
-    // Add more company information as needed
-    echo '</div>';
-
-    // List of Flights
-    echo '<table class="flight-table">';
-    echo '<thead>';
-    echo '<tr><th>ID</th><th>Name</th><th>Itinerary</th><th>Actions</th></tr>';
-    echo '</thead>';
-    echo '<tbody>';
-    foreach ($flights as $flight) {
-        echo '<tr>';
-        echo '<td>' . $flight->getId() . '</td>';
-        echo '<td>' . $flight->getName() . '</td>';
-        echo '<td>' . $flight->getItinerary() . '</td>';
-        echo '<td><a href="flight_details.php?id=' . $flight->getId() . '">View Details</a></td>';
-        echo '</tr>';
-    }
-    echo '</tbody>';
-    echo '</table>';
-
-    // Profile and Messages links
-    echo '<div class="company-links">';
-    echo '<a href="profile.php">Profile</a>';
-    echo '<a href="messages.php">Messages</a>';
-    echo '<a href="add_flight.php">Add Flight</a>';
-    echo '</div>';
-    ?>
-
-</div>
-
-<script src="../../assets/libraries/jquery/jquery.min.js"></script>
-<script src="../../assets/libraries/jquery-ui/jquery-ui.min.js"></script>
-<script src="../../assets/js/scripts.js"></script>
 </body>
 </html>

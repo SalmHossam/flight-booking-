@@ -1,5 +1,58 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passenger Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 20px;
+        }
 
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<?php
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params(0);
     session_start();
@@ -17,24 +70,24 @@ $passengerRepo = new PassengerRepo();
 $passenger = $passengerRepo->getPassengerProfile($passengerId);
 
 if ($passenger) {
-    // Display passenger profile data
-    // echo "Passenger ID: " . $passenger->getId() . "<br>";
-    echo "Name: " . $passenger->getName() . "<br>";
-    echo "Username: " . $passenger->getUsername() . "<br>";
-    echo "Email: " . $passenger->getEmail() . "<br>";
-    echo "Phone: " . $passenger->getTel() . "<br>";
+    // Display passenger profile data with output encoding
+    echo "<h1>Passenger Profile</h1>";
+    echo "Name: " . htmlspecialchars($passenger->getName()) . "<br>";
+    echo "Username: " . htmlspecialchars($passenger->getUsername()) . "<br>";
+    echo "Email: " . htmlspecialchars($passenger->getEmail()) . "<br>";
+    echo "Phone: " . htmlspecialchars($passenger->getTel()) . "<br>";
     // Display other profile data as needed
 
     // Update Passenger Profile (Assuming you have form data to update the profile)
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $updatedPassenger = new Passenger(
-            $_POST['name'],
-            $_POST['username'],
-            $_POST['email'],
+            htmlspecialchars($_POST['name']),
+            htmlspecialchars($_POST['username']),
+            htmlspecialchars($_POST['email']),
             '',
-            $_POST['tel'],
-            $_POST['passportImg'],
-            $_POST['photo']
+            htmlspecialchars($_POST['tel']),
+            htmlspecialchars($_POST['passportImg']),
+            htmlspecialchars($_POST['photo'])
         );
         $updatedPassenger->setId($passengerId);
 
@@ -46,21 +99,34 @@ if ($passenger) {
         exit();
     }
 
-    // Display a form to update passenger profile data
+    // Display a form to update passenger profile data with output encoding
     ?>
-    <form method="post" action="profile.php">
-        Name: <input type="text" name="name" value="<?php echo $passenger->getName(); ?>"><br>
-        Username: <input type="text" name="username" value="<?php echo $passenger->getUsername(); ?>"><br>
-        Email: <input type="text" name="email" value="<?php echo $passenger->getEmail(); ?>"><br>
-        Phone: <input type="text" name="tel" value="<?php echo $passenger->getTel(); ?>"><br>
-        Passport Image: <input type="text" name="passportImg" value="<?php echo $passenger->getPassportImg(); ?>"><br>
-        Photo: <input type="text" name="photo" value="<?php echo $passenger->getPhoto(); ?>"><br>
+    <form method="post" action="./passenger/profile.php">
+        <label for="name">Name:</label>
+        <input type="text" name="name" value="<?php echo htmlspecialchars($passenger->getName()); ?>">
+
+        <label for="username">Username:</label>
+        <input type="text" name="username" value="<?php echo htmlspecialchars($passenger->getUsername()); ?>">
+
+        <label for="email">Email:</label>
+        <input type="text" name="email" value="<?php echo htmlspecialchars($passenger->getEmail()); ?>">
+
+        <label for="tel">Phone:</label>
+        <input type="text" name="tel" value="<?php echo htmlspecialchars($passenger->getTel()); ?>">
+
+        <label for="passportImg">Passport Image:</label>
+        <input type="text" name="passportImg" value="<?php echo htmlspecialchars($passenger->getPassportImg()); ?>">
+
+        <label for="photo">Photo:</label>
+        <input type="text" name="photo" value="<?php echo htmlspecialchars($passenger->getPhoto()); ?>">
 
         <input type="submit" value="Update Profile">
     </form>
     <?php
 } else {
-    echo "Passenger not found.";
+    echo "<p class='error'>Passenger not found.</p>";
 }
 ?>
 
+</body>
+</html>

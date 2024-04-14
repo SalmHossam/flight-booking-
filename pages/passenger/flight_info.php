@@ -5,10 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flight Information</title>
-    <!-- Include any necessary CSS styles or external libraries -->
+    <link rel="stylesheet" href="../../assets/css/flight_info.css">
 </head>
 <body>
-
 <?php
 // Include the necessary classes and files
 require_once '../../classes/model/Flight.php';
@@ -22,7 +21,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Check if the flight ID is provided in the URL
 if (isset($_GET['id'])) {
-    $flightId = $_GET['id'];
+    $flightId = htmlspecialchars($_GET['id']);
 
     // Create an instance of the FlightRepo
     $flightRepo = new FlightRepo();
@@ -33,14 +32,14 @@ if (isset($_GET['id'])) {
     if ($flight) {
         // Display flight details
         echo '<h1>Flight Details</h1>';
-        echo '<p>ID: ' . $flight->getId() . '</p>';
-        echo '<p>Name: ' . $flight->getName() . '</p>';
-        echo '<p>Itinerary: ' . $flight->getItinerary() . '</p>';
-        echo '<p>Passengers Limit: ' . $flight->getPassengersLimit() . '</p>';
-        echo '<p>Fees: ' . $flight->getFees() . '</p>';
-        echo '<p>Start Time: ' . $flight->getStartTime() . '</p>';
-        echo '<p>End Time: ' . $flight->getEndTime() . '</p>';
-        echo '<p>Completed: ' . ($flight->isCompleted() ? 'Yes' : 'No') . '</p>';
+        echo '<p>ID: ' . htmlspecialchars($flight->getId()) . '</p>';
+        echo '<p>Name: ' . htmlspecialchars($flight->getName()) . '</p>';
+        echo '<p>Itinerary: ' . htmlspecialchars($flight->getItinerary()) . '</p>';
+        echo '<p>Passengers Limit: ' . htmlspecialchars($flight->getPassengersLimit()) . '</p>';
+        echo '<p>Fees: ' . htmlspecialchars($flight->getFees()) . '</p>';
+        echo '<p>Start Time: ' . htmlspecialchars($flight->getStartTime()) . '</p>';
+        echo '<p>End Time: ' . htmlspecialchars($flight->getEndTime()) . '</p>';
+        echo '<p>Completed: ' . (htmlspecialchars($flight->isCompleted() ? 'Yes' : 'No')) . '</p>';
         // Add more details as needed
 
         // Display booking form
@@ -54,7 +53,7 @@ if (isset($_GET['id'])) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book'])) {
             // Check if the user is logged in
             if (isset($_SESSION['user_id'])) {
-                $passengerId = $_SESSION['user_id'];
+                $passengerId = htmlspecialchars($_SESSION['user_id']);
 
                 // Create an instance of PassengerFlightsRepo
                 $passengerFlightsRepo = new PassengerFlightsRepo();

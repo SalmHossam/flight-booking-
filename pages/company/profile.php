@@ -1,10 +1,21 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="path/to/styles.css">
+    <link rel="stylesheet" href="../../assets/css/companyProfile.css">
+</head>
+<body>
+
 <?php
 
 require_once '../../classes/model/Company.php';
 require_once '../../classes/repo/CompanyRepo.php';
 
 session_start();
-$companyId = $_SESSION['user_id'];
+$companyId = htmlspecialchars($_SESSION['user_id']); // Escape session user ID
 
 // Create an instance of CompanyRepo
 $companyRepo = new CompanyRepo();
@@ -14,29 +25,28 @@ $company = $companyRepo->getCompanyProfile($companyId);
 
 if ($company) {
     // Display company profile data
-    // echo "Company ID: " . $Company->getId() . "<br>";
-    echo "Name: " . $company->getName() . "<br>";
-    echo "Username: " . $company->getUsername() . "<br>";
-    echo "Email: " . $company->getEmail() . "<br>";
-    echo "Phone: " . $company->getTel() . "<br>";
-    echo "Bio: " . $company->getBio() . "<br>";
-    echo "Address: " . $company->getAddress() . "<br>";
+    echo "Name: " . htmlspecialchars($company->getName()) . "<br>"; // Escape company name
+    echo "Username: " . htmlspecialchars($company->getUsername()) . "<br>"; // Escape username
+    echo "Email: " . htmlspecialchars($company->getEmail()) . "<br>"; // Escape email
+    echo "Phone: " . htmlspecialchars($company->getTel()) . "<br>"; // Escape phone
+    echo "Bio: " . htmlspecialchars($company->getBio()) . "<br>"; // Escape bio
+    echo "Address: " . htmlspecialchars($company->getAddress()) . "<br>"; // Escape address
     // Display other profile data as needed
     
     // Update Company Profile
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $updatedCompany = new Company(
-            $_POST['name'],
-            $_POST['username'],
-            $_POST['email'],
+            htmlspecialchars($_POST['name']), // Escape name
+            htmlspecialchars($_POST['username']), // Escape username
+            htmlspecialchars($_POST['email']), // Escape email
             '',
-            $_POST['tel'],
-            $_POST['bio'],
-            $_POST['address'],
-            $_POST['location'],
-            $_POST['logo_img']
+            htmlspecialchars($_POST['tel']), // Escape phone
+            htmlspecialchars($_POST['bio']), // Escape bio
+            htmlspecialchars($_POST['address']), // Escape address
+            htmlspecialchars($_POST['location']), // Escape location
+            htmlspecialchars($_POST['logo_img']) // Escape logo image
         );
-        $updatedCompany ->setId($companyId);
+        $updatedCompany->setId($companyId);
 
         // Update the company profile
         $companyRepo->updateCompanyProfile($updatedCompany);
@@ -68,6 +78,6 @@ if ($company) {
 ?>
 
 
-
-
+</body>
+</html>
 

@@ -4,7 +4,7 @@ require_once '../../classes/repo/FlightRepo.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['flightId'])) {
-        $flightId = $_POST['flightId'];
+        $flightId = htmlspecialchars($_POST['flightId']);
 
         // Create an instance of the FlightRepo
         $flightRepo = new FlightRepo();
