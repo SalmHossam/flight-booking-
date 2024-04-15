@@ -101,7 +101,7 @@ if ($passenger) {
 
     // Display a form to update passenger profile data with output encoding
     ?>
-    <form method="post" action="./passenger/profile.php">
+    <form method="post" action="./profile.php">
         <label for="name">Name:</label>
         <input type="text" name="name" value="<?php echo htmlspecialchars($passenger->getName()); ?>">
 
