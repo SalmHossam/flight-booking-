@@ -13,8 +13,8 @@
     <p>Please select an option:</p>
 
     <div class="options-container">
-        <a href="../../pages/login.php">Login</a>
-        <a href="../../pages/register.php">Register</a>
+        <a href="../pages/login.php">Login</a>
+        <a href="../pages/register.php">Register</a>
     </div>
 </div>
 

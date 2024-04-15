@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <form method="post" action="../../pages/passenge/profile.php">
+        <!-- Add form fields for updating passenger profile -->
+        Name: <input type="text" name="name" value="<?php echo $passenger->getName(); ?>"><br>
+        Username: <input type="text" name="username" value="<?php echo $passenger->getUsername(); ?>"><br>
+        Email: <input type="text" name="email" value="<?php echo $passenger->getEmail(); ?>"><br>
+        Phone: <input type="text" name="tel" value="<?php echo $passenger->getTel(); ?>"><br>
+        Passport Image: <input type="text" name="passportImg" value="<?php echo $passenger->getPassportImg(); ?>"><br>
+        Photo: <input type="text" name="photo" value="<?php echo $passenger->getPhoto(); ?>"><br>
+
+        <input type="submit" value="Update Profile">
+    </form>
+</body>
+</html>
