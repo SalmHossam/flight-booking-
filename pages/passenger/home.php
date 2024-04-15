@@ -66,6 +66,7 @@
 <body>
 
 <?php
+// Start the session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params(0);
     session_start();
@@ -73,50 +74,78 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once '../../classes/model/Passenger.php';
 require_once '../../classes/repo/PassengerRepo.php';
-require_once '../../includes/authentication.php';
 
-$passengerId = $_SESSION['user_id'];
-$passengerRepo = new PassengerRepo();
+// Check if user is logged in
+if(isset($_SESSION['user_id'])) {
+    $passengerId = $_SESSION['user_id'];
+    $passengerRepo = new PassengerRepo();
 
-$passenger = $passengerRepo->getPassengerProfile($passengerId);
+    // Retrieve passenger profile
+    $passenger = $passengerRepo->getPassengerProfile($passengerId);
 
-if ($passenger) {
-    // Display passenger information
-    echo "<h1>Welcome, " . htmlspecialchars($passenger->getName()) . "!</h1>";
-    echo "<p>Email: " . htmlspecialchars($passenger->getEmail()) . "</p>";
-    echo "<p>Tel: " . htmlspecialchars($passenger->getTel()) . "</p>";
-    echo "<img src='" . htmlspecialchars($passenger->getPhoto()) . "' alt='Passenger Photo' style='max-width: 200px; max-height: 200px;' />";
-    
-    // List of completed flights (you'll need to implement this logic)
-    echo "<h2>Completed Flights</h2>";
-    // Display completed flights here
+    if ($passenger) {
+        // Display passenger information
+        echo "<h1>Welcome, " . htmlspecialchars($passenger->getName()) . "!</h1>";
+        echo "<p>Email: " . htmlspecialchars($passenger->getEmail()) . "</p>";
+        echo "<p>Tel: " . htmlspecialchars($passenger->getTel()) . "</p>";
+        echo "<img src='" . htmlspecialchars($passenger->getPhoto()) . "' alt='Passenger Photo' style='max-width: 200px; max-height: 200px;' />";
+        
+        // Display completed flights
+        echo "<h2>Completed Flights</h2>";
+        $completedFlights = $passengerRepo->getCompletedFlights($passengerId);
+        if (!empty($completedFlights)) {
+            foreach ($completedFlights as $flight) {
+                // Display flight details
+                echo "<p>Flight Number: " . htmlspecialchars($flight['flight_number']) . "</p>";
+                echo "<p>Departure Time: " . htmlspecialchars($flight['departure_time']) . "</p>";
+                echo "<p>Arrival Time: " . htmlspecialchars($flight['arrival_time']) . "</p>";
+                echo "<p>Status: " . htmlspecialchars($flight['status']) . "</p>";
+            }
+        } else {
+            echo "<p>No completed flights.</p>";
+        }
 
-    // Current flights (you'll need to implement this logic)
-    echo "<h2>Current Flights</h2>";
-    // Display current flights here
+        // Display current flights
+        echo "<h2>Current Flights</h2>";
+        $currentFlights = $passengerRepo->getCurrentFlights($passengerId);
+        if (!empty($currentFlights)) {
+            foreach ($currentFlights as $flight) {
+                // Display flight details
+                echo "<p>Flight Number: " . htmlspecialchars($flight['flight_number']) . "</p>";
+                echo "<p>Departure Time: " . htmlspecialchars($flight['departure_time']) . "</p>";
+                echo "<p>Arrival Time: " . htmlspecialchars($flight['arrival_time']) . "</p>";
+                echo "<p>Status: " . htmlspecialchars($flight['status']) . "</p>";
+            }
+        } else {
+            echo "<p>No current flights.</p>";
+        }
 
-    // Profile link
-    echo "<a href='profile.php'>View/Edit Profile</a>";
+        // Profile link
+        echo "<a href='profile.php'>View/Edit Profile</a>";
 
-    // Search a flight link
-    echo "<a href='search_flight.php'>Search for a Flight</a>";
-    // Button container
-    echo "<div class='button-container'>";
+        // Search a flight link
+        echo "<a href='search_flight.php'>Search for a Flight</a>";
+        // Button container
+        echo "<div class='button-container'>";
 
-    // Feedback button
-    echo "<a href='../../assets/html/feedback.html' class='button'>Feedback</a>";
+        // Feedback button
+        echo "<a href='../../assets/html/feedback.html' class='button'>Feedback</a>";
 
-    // Contact Us button
-    echo "<a href='../../assets/html/contactus.html' class='button'>Contact Us</a>";
+        // Contact Us button
+        echo "<a href='../../assets/html/contactus.html' class='button'>Contact Us</a>";
 
-    // About Us button
-    echo "<a href='../../assets/html/aboutus.html' class='button'>About Us</a>";
+        // About Us button
+        echo "<a href='../../assets/html/aboutus.html' class='button'>About Us</a>";
 
-    echo "</div>";
+        echo "</div>";
+    } else {
+        echo "<p class='error'>Failed to fetch passenger data.</p>";
+    }
 } else {
-    echo "<p class='error'>Failed to fetch passenger data.</p>";
+    echo "<p class='error'>User not logged in.</p>";
 }
 ?>
+
 
 </body>
 </html>
