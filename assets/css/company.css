@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Style for company information */
+div {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+div img {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 50%;
+}
+
+div h1 {
+    margin-top: 10px;
+    font-size: 1.5em;
+}
+
+div p {
+    margin-top: 10px;
+    color: #555;
+}
+
+/* Style for flights table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #4caf50;
+    color: white;
+}
+
+/* Style for profile and messages links */
+div a {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 10px;
+    text-decoration: none;
+    background-color: #3498db;
+    color: white;
+    border-radius: 4px;
+}
+
+div a:hover {
+    background-color: #2980b9;
+}
